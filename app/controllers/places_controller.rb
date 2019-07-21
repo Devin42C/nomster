@@ -9,10 +9,14 @@ class PlacesController < ApplicationController
     @place = Place.new
   end
 
-# function that controls button
+
 def create
   @place = current_user.places.create(place_params)
-  redirect_to root_path
+  if @place.valid?
+    redirect_to root_path
+  else
+    render :new, status: :unprocessable_entity
+  end
 end
 
 def show
@@ -28,11 +32,19 @@ end
 
 def update
   @place= Place.find(params[:id])
+
   if @place.user != current_user
     return render plain: 'Not Allowed', status: forbidden
   end
+
   @place.update_attributes(place_params)
-  redirect_to root_path
+
+  if @place.valid?
+    redirect_to root_path
+  else 
+    render :new, status: :unprocessable_entity
+  end
+
 end
 
 def destroy
