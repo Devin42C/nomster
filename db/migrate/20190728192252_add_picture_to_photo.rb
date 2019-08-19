@@ -1,5 +1,11 @@
 class AddPictureToPhoto < ActiveRecord::Migration[5.2]
   def change
-    add_column :photos, :picture, :string
+    create_table :photos do |t|
+      t.text :picture
+      t.string :caption
+      t.integer :user_id
+      t.integer :place_id
+      t.timestamps
+    end
   end
 end
